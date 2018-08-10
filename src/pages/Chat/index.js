@@ -1,80 +1,93 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import {
   View,
   Text,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
+
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import Input from '../components/Input';
 
 import styles from './styles';
 
-const Chat = () => (
-  <KeyboardAvoidingView style={styles.container} behavior={null} keyboardShouldPersistTaps="never">
-    <ScrollView contentContainerStyle={styles.conversation}>
-      <View style={[styles.bubble, styles['bubble-left']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
+const author = 'Igor';
 
-      <View style={[styles.bubble, styles['bubble-left']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
+class Chat extends Component {
+  componentDidUpdate() {
+    setTimeout(() => {
+      this._scrollView.scrollToEnd({ animated: false });
+    }, 0);
+  }
 
-      <View style={[styles.bubble, styles['bubble-right']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
+  handleAddMessage = (proxy, { data: { createMessage } }) => {
+    const data = proxy.readQuery({
+      query: ConversationQuery,
+    });
 
-      <View style={[styles.bubble, styles['bubble-left']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
+    data.allMessages.push(createMessage);
 
-      <View style={[styles.bubble, styles['bubble-left']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
+    proxy.writeQuery({
+      query: ConversationQuery,
+      data
+    });
+  };
 
-      <View style={[styles.bubble, styles['bubble-right']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
+  renderChat = () => (
+    this.props.conversation.allMessages.map(item => (
+      <View
+        key={item.id}
+        style={[
+          styles.bubble,
+          item.from === author
+            ? styles['bubble-right']
+            : styles['bubble-left']
+        ]}
+      >
+        <Text style={styles.author}>
+          {item.from}
+        </Text>
+        <Text style={styles.message}>
+          {item.message}
+        </Text>
       </View>
+    ))
+  );
 
-      <View style={[styles.bubble, styles['bubble-left']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
+  render() {
+    return (
+      <KeyboardAvoidingView style={styles.container} behavior={null}>
+        <ScrollView
+          contentContainerStyle={styles.conversation}
+          keyboardShouldPersistTaps="never"
+          ref={scrollView => this._scrollView = scrollView}
+        >
+          { this.props.conversation.loading
+            ? <ActivityIndicator style={styles.loading} color="#fff" />
+            : this.renderChat() }
+        </ScrollView>
+        <Input author={author} onAddMessage={this.handleAddMessage} />
+      </KeyboardAvoidingView>
+    );
+  }
+}
 
-      <View style={[styles.bubble, styles['bubble-left']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
+const ConversationQuery = gql`
+  query {
+    allMessages(
+      orderBy: createdAt_ASC
+    ) {
+      id
+      from
+      message
+    }
+  }
+`;
 
-      <View style={[styles.bubble, styles['bubble-right']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
-      <View style={[styles.bubble, styles['bubble-left']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
-
-      <View style={[styles.bubble, styles['bubble-left']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
-
-      <View style={[styles.bubble, styles['bubble-right']]}>
-        <Text style={styles.author}>Igor</Text>
-        <Text style={styles.message}>Ola TCC</Text>
-      </View>
-    </ScrollView>
-    <Input />
-  </KeyboardAvoidingView>
-);
-
-export default Chat;
+export default graphql(ConversationQuery, {
+  name: 'conversation',
+})(Chat);

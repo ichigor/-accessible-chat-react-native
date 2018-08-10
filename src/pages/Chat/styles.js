@@ -47,6 +47,10 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 
+  loading: {
+    marginTop: 20,
+  },
+
 });
 
 export default styles;
