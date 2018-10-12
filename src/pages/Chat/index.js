@@ -15,7 +15,7 @@ import Input from '../components/Input';
 
 import styles from './styles';
 
-const author = 'Igor';
+const author = 'Anônimo';
 
 class Chat extends Component {
   componentDidMount() {
@@ -72,11 +72,12 @@ class Chat extends Component {
     this.props.conversation.allMessages.map(item => (
       <View
         key={item.id}
+        accessible
         style={[
           styles.bubble,
           item.from === author
             ? styles['bubble-right']
-            : styles['bubble-left']
+            : styles['bubble-left'],
         ]}
       >
         <Text style={styles.author}>
