@@ -12,11 +12,11 @@ import client from './apollo/client';
 
 import Chat from './pages/Chat';
 
-import 'config/ReactotronConfig';
+// import 'config/ReactotronConfig';
 
 export default class App extends Component {
   componentDidMount() {
-    console.tron.log();
+    // console.tron.log();
   }
 
   render() {
