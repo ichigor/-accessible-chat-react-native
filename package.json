@@ -19,6 +19,7 @@
     "react": "16.6.0-alpha.8af6728",
     "react-apollo": "^2.1.9",
     "react-native": "0.57.3",
+    "react-native-onesignal": "^3.2.7",
     "reactotron-react-native": "^2.0.0",
     "subscriptions-transport-ws": "^0.9.14"
   },
