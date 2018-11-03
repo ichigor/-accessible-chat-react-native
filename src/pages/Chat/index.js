@@ -73,19 +73,26 @@ class Chat extends Component {
       <View
         key={item.id}
         accessible
+        accessibilityLiveRegion="polite"
         style={[
-          styles.bubble,
-          item.from === author
-            ? styles['bubble-right']
-            : styles['bubble-left'],
+          styles.line,
         ]}
       >
-        <Text style={styles.author}>
-          {item.from}
-        </Text>
-        <Text style={styles.message}>
-          {item.message}
-        </Text>
+        <View
+          style={[
+            styles.bubble,
+            item.from === author
+              ? styles['bubble-right']
+              : styles['bubble-left'],
+          ]}
+        >
+          <Text style={styles.author}>
+            {item.from}
+          </Text>
+          <Text style={styles.message}>
+            {item.message}
+          </Text>
+        </View>
       </View>
     ))
   );

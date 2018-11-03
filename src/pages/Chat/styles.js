@@ -27,6 +27,20 @@ const styles = StyleSheet.create({
     maxWidth: width - 60,
   },
 
+  line: {
+    padding: 6,
+    borderRadius: 6,
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 0,
+    marginTop: 10,
+    maxWidth: width,
+  },
+
   'bubble-right': {
     alignSelf: 'flex-end',
     backgroundColor: '#D1EDC1',

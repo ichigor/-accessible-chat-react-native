@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-// import {
-//   Platform,
-//   StyleSheet,
-//   Text,
-//   View,
-// } from 'react-native';
+import {
+  Vibration,
+} from 'react-native';
 
 import OneSignal from 'react-native-onesignal';
 
@@ -26,18 +23,20 @@ export default class App extends Component {
   }
 
   onReceived(notification) {
-    console.log("Notification received:", notification);
+    // console.log("Notification received:", notification);
+    const DURATION = 1000;
+    Vibration.vibrate(DURATION);
   }
 
   onOpened(result) {
-    console.log('Message:', result.notification.payload.body);
-    console.log('Data:', result.notification.payload.additionalData);
-    console.log('isActive:', result.notification.isAppInFocus);
-    console.log('Result:', result);
+    // console.log('Message:', result.notification.payload.body);
+    // console.log('Data:', result.notification.payload.additionalData);
+    // console.log('isActive:', result.notification.isAppInFocus);
+    // console.log('Result:', result);
   }
 
   onIds(device) {
-    console.log('Device info: ', device);
+    // console.log('Device info: ', device);
   }
 
   render() {
